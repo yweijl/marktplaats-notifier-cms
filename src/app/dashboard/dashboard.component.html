@@ -1,0 +1,28 @@
+<div class="container">
+<div class="header">
+ <h1>Marktplaats Notifier</h1>
+</div>
+<div class="body">
+  <div class="section">
+      ssd
+  </div>
+  <div class="section">
+      <mat-card class="card" *ngFor="let item of advertiments">
+        <div class="card-header">
+          <mat-card-title>{{item.title}}</mat-card-title>
+        </div>
+        <div class="card-content">
+          <img class="card-image" src="{{item.imageSource}}" alt="Photo {{item.title}}">
+          <div class="card-text">
+            <p>{{item.description}}</p>
+            <div class="card-footer">
+              <h3>Prijs: {{item.price}}</h3>
+              <a mat-raised-button href="{{item.url}}" target="_blank">Ga naar advertentie</a>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+</div>
+</div>
+</div>
+

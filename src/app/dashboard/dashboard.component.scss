@@ -1,0 +1,160 @@
+.flex {
+  display: flex;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  background-color: #fafafa;
+}
+
+.header {
+  display: flex;
+  background-color: gray;
+  padding: 24px 32px 24px;
+  
+  h1 {
+    font-weight: 500;
+    font-size: 34px;
+    letter-spacing: 0.25px;
+    margin-bottom: 0;
+  }
+}
+
+.body {
+  display: flex;
+  flex-direction: row;
+}
+
+
+.section {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+}
+
+.section:first-child{
+  width: 33%;
+}
+
+.section:last-child{
+  width: 66%;
+}
+
+
+.card {
+  margin: 32px;
+  height: 320px;
+  max-width: 1024px;
+  display: flex;
+  align-self: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card-header {
+  margin-top: 32px;
+  margin-left: 32px;
+  margin-bottom: 32px;
+  height: max-content;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: row;
+  margin-left: 32px;
+  height: 200px;
+}
+
+.card-image {
+  margin: 0;
+  width: 240px;
+}
+
+.card-text {
+  margin-left: 32px;
+  margin-right: 32px;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  p {
+    font-size: 16px;
+    letter-spacing: 0.5px;
+  }
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  
+  h3 {
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.1px;
+    margin-bottom: 0px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .header {
+    background-color: gray;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    justify-content: center;
+    h1 {
+      font-weight: 500;
+      font-size: 34px;
+      letter-spacing: 0.25px;
+      margin-bottom: 0;
+    }
+  }
+
+  .body {
+    flex-direction: column;
+  }
+
+  .section:first-child{
+    display: none;
+  }
+  
+  .section:last-child{
+    width: 100%;
+  }
+
+  .card {
+    width: 300px;
+    // height: 100%;
+    margin-bottom: 32px;
+    justify-content: start;
+    height: auto;
+  }
+
+  .card-content {
+    flex-direction: column;
+    height: auto;
+    margin-left: 0;
+  }
+  
+  .card-text {
+    margin: 32px 0 0 0;
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+
+  .card-image {
+    width: 100%;
+  }
+
+  .card-header {
+    margin-left: 0px;
+    margin-bottom: 24px;
+  }
+}
+
