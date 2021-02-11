@@ -4,10 +4,26 @@
 </div>
 <div class="body">
   <div class="section">
-      ssd
+      <mat-card class="query-card">
+          <div class="queries">
+            <mat-selection-list #selectedQuery [multiple]="false">
+              <mat-list-option *ngFor="let query of queries" [value]="query">
+                  <div class="list-item">
+                  {{query.name}}
+                  <button (click)="onRemoveQuery(query.id)" mat-icon-button>
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </mat-list-option>
+            </mat-selection-list>
+
+
+            <button class="add-item" mat-stroked-button color="primary" (click)="onNewQuery()">Nieuwe zoekopdracht</button>
+          </div>
+      </mat-card>
   </div>
   <div class="section">
-      <mat-card class="card" *ngFor="let item of advertiments">
+      <mat-card class="advertisement-card" *ngFor="let item of advertiments">
         <div class="card-header">
           <mat-card-title>{{item.title}}</mat-card-title>
         </div>
