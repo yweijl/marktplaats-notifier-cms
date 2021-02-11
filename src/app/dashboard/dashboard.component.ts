@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { map } from 'rxjs/operators';
-import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
+import { Component, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { BehaviorSubject, Observable } from 'rxjs';
 import {Advertisement} from '../models/advertisement.model'
 import {Query} from '../models/query.model'
 
@@ -20,15 +20,25 @@ export class DashboardComponent {
 
   queries: Query[] = [{id:1, name: "a", url: 'a'}, {id:2, name: 'b', url:'a'}]
   selectedQuery: Query;
+  newQuery = false;
+  newQueryForm:FormGroup;
+
+  ngOnInit(): void {
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+    this.newQueryForm = new FormGroup({
+      'name': new FormControl(null, Validators.required),
+      'url': new FormControl(null, Validators.required)
+    });
+  }
 
   constructor() {}
 
   onNewQuery() {
-    this.queries.push({id:9, name: 'Voeg titel toe', url: ''})
+    this.newQuery = true;
   }
 
   onRemoveQuery(id:number){
-
     if (!id) {
       throw new Error('invalid id');
     }
@@ -38,5 +48,22 @@ export class DashboardComponent {
       return;
     }
     this.queries.splice(index, 1);
+    if (this.selectedQuery.id === id) {
+      this.selectedQuery = null;
+    }
+  }
+
+  onSetSelectedQuery(id:number) {
+    this.selectedQuery = this.queries.find(x => x.id === id);
+  }
+
+  onSaveNewQuery(){
+    if (this.newQuery){
+      this.queries.push({id:9, name: this.newQueryForm.get('name').value, url: this.newQueryForm.get('url').value })
+      this.newQuery = false;
+    } else {
+      console.log(this.queries.find(x => x.id === this.selectedQuery.id))
+      console.log(this.selectedQuery);
+    }
   }
 }
