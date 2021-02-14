@@ -1,8 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { BehaviorSubject, Observable } from 'rxjs';
-import {Advertisement} from '../models/advertisement.model'
-import {Query} from '../models/query.model'
+import { Observable } from 'rxjs';
+import { QueryClient, Query, NewQueryDto, Advertisement } from '../http.clients/api.client'
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,19 +11,19 @@ import {Query} from '../models/query.model'
 })
 export class DashboardComponent {
 
-  advertiments: Advertisement[] = [new Advertisement("https://marktplaats.nl/a/watersport-en-boten/surfen-golfsurfen/m1664915169-surfboard.html", "https://ci4.googleusercontent.com/proxy/K4US2xuiuVEjKqkrJDjIYVCv9DBxZNEOiAckbhw9xdPHwyCBXHBaW8FXDn_VglUZDxGze2ToyJEoAMqt6q9j7vtqIsi4cvB_YNgOE1cXkO-4VWqkig=s0-d-e1-ft#http://i.ebayimg.com/00/s/NjE0WDgyOA==/z/6RUAAOSwLGpgIvqh/$_82.JPG", "Titel: Surfboard", "Omschrijving Te koop: surfboard 6’2, incl vinnen, leash en boardsok. Redbull editie, in goede staat! Lengte: 189 cm. Breedte: 58,5 cm. Volume: ", "Bieden"),
-  new Advertisement("https://marktplaats.nl/a/watersport-en-boten/surfen-golfsurfen/m1664915169-surfboard.html", "https://ci4.googleusercontent.com/proxy/K4US2xuiuVEjKqkrJDjIYVCv9DBxZNEOiAckbhw9xdPHwyCBXHBaW8FXDn_VglUZDxGze2ToyJEoAMqt6q9j7vtqIsi4cvB_YNgOE1cXkO-4VWqkig=s0-d-e1-ft#http://i.ebayimg.com/00/s/NjE0WDgyOA==/z/6RUAAOSwLGpgIvqh/$_82.JPG", "Titel: Surfboard", "Omschrijving Te koop: surfboard 6’2, incl vinnen, leash en boardsok. Redbull editie, in goede staat! Lengte: 189 cm. Breedte: 58,5 cm. Volume: ", "Bieden"),
-  new Advertisement("https://marktplaats.nl/a/watersport-en-boten/surfen-golfsurfen/m1664915169-surfboard.html", "https://ci4.googleusercontent.com/proxy/K4US2xuiuVEjKqkrJDjIYVCv9DBxZNEOiAckbhw9xdPHwyCBXHBaW8FXDn_VglUZDxGze2ToyJEoAMqt6q9j7vtqIsi4cvB_YNgOE1cXkO-4VWqkig=s0-d-e1-ft#http://i.ebayimg.com/00/s/NjE0WDgyOA==/z/6RUAAOSwLGpgIvqh/$_82.JPG", "Titel: Surfboard", "Omschrijving Te koop: surfboard 6’2, incl vinnen, leash en boardsok. Redbull editie, in goede staat! Lengte: 189 cm. Breedte: 58,5 cm. Volume: ", "Bieden"),
-  new Advertisement("https://marktplaats.nl/a/watersport-en-boten/surfen-golfsurfen/m1664915169-surfboard.html", "https://ci4.googleusercontent.com/proxy/K4US2xuiuVEjKqkrJDjIYVCv9DBxZNEOiAckbhw9xdPHwyCBXHBaW8FXDn_VglUZDxGze2ToyJEoAMqt6q9j7vtqIsi4cvB_YNgOE1cXkO-4VWqkig=s0-d-e1-ft#http://i.ebayimg.com/00/s/NjE0WDgyOA==/z/6RUAAOSwLGpgIvqh/$_82.JPG", "Titel: Surfboard", "Omschrijving Te koop: surfboard 6’2, incl vinnen, leash en boardsok. Redbull editie, in goede staat! Lengte: 189 cm. Breedte: 58,5 cm. Volume: ", "Bieden"),
-  new Advertisement("https://marktplaats.nl/a/watersport-en-boten/surfen-golfsurfen/m1664915169-surfboard.html", "https://ci4.googleusercontent.com/proxy/K4US2xuiuVEjKqkrJDjIYVCv9DBxZNEOiAckbhw9xdPHwyCBXHBaW8FXDn_VglUZDxGze2ToyJEoAMqt6q9j7vtqIsi4cvB_YNgOE1cXkO-4VWqkig=s0-d-e1-ft#http://i.ebayimg.com/00/s/NjE0WDgyOA==/z/6RUAAOSwLGpgIvqh/$_82.JPG", "Titel: Surfboard", "Omschrijving Te koop: surfboard 6’2, incl vinnen, leash en boardsok. Redbull editie, in goede staat! Lengte: 189 cm. Breedte: 58,5 cm. Volume: ", "Bieden"),
-  new Advertisement("https://marktplaats.nl/a/watersport-en-boten/surfen-golfsurfen/m1664915169-surfboard.html", "https://ci4.googleusercontent.com/proxy/K4US2xuiuVEjKqkrJDjIYVCv9DBxZNEOiAckbhw9xdPHwyCBXHBaW8FXDn_VglUZDxGze2ToyJEoAMqt6q9j7vtqIsi4cvB_YNgOE1cXkO-4VWqkig=s0-d-e1-ft#http://i.ebayimg.com/00/s/NjE0WDgyOA==/z/6RUAAOSwLGpgIvqh/$_82.JPG", "Titel: Surfboard", "Omschrijving Te koop: surfboard 6’2, incl vinnen, leash en boardsok. Redbull editie, in goede staat! Lengte: 189 cm. Breedte: 58,5 cm. Volume: ", "Bieden")];
-
-  queries: Query[] = [{id:1, name: "a", url: 'a'}, {id:2, name: 'b', url:'a'}]
+  queries: Query[];
   selectedQuery: Query;
+  selectedQueryId: number;
   newQuery = false;
-  newQueryForm:FormGroup;
+  newQueryForm: FormGroup;
+  Adds: Observable<Advertisement[]>;
+  isProcessing: boolean = false;
+  errorOccured: false;
 
   ngOnInit(): void {
+    this.queryClient.getList(1).subscribe(response => {
+      this.queries = response;
+    })
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
     this.newQueryForm = new FormGroup({
@@ -32,38 +32,91 @@ export class DashboardComponent {
     });
   }
 
-  constructor() {}
+  constructor(
+    private queryClient: QueryClient, 
+    private _snackBar: MatSnackBar,
+    private ref: ChangeDetectorRef) { }
+
+  showErrorMessagse() {
+    const snackbar = this._snackBar.open("Er is iets misgegaan tijdens het laden van de data", "OK");
+    snackbar.afterDismissed().subscribe(() => {
+      this.errorOccured = false;
+      this.isProcessing = false;
+      this.ref.detectChanges();
+    });
+  }
 
   onNewQuery() {
     this.newQuery = true;
+    this.selectedQuery = null;
   }
 
-  onRemoveQuery(id:number){
+  onRemoveQuery(id: number) {
     if (!id) {
       throw new Error('invalid id');
     }
 
     const index = this.queries.findIndex(x => x.id === id);
-    if (index < 0){
+    if (index < 0) {
       return;
     }
     this.queries.splice(index, 1);
-    if (this.selectedQuery.id === id) {
+    if (this.selectedQuery?.id === id) {
       this.selectedQuery = null;
     }
+
+    this.queryClient.delete(id).subscribe();
   }
 
-  onSetSelectedQuery(id:number) {
+  onSetSelectedQuery(id: number) {
+    this.newQuery = false;
     this.selectedQuery = this.queries.find(x => x.id === id);
+    this.selectedQueryId = id;
   }
 
-  onSaveNewQuery(){
-    if (this.newQuery){
-      this.queries.push({id:9, name: this.newQueryForm.get('name').value, url: this.newQueryForm.get('url').value })
-      this.newQuery = false;
+  onSave() {
+    if (this.newQuery) {
+      this.saveNewQuery();   
+
     } else {
-      console.log(this.queries.find(x => x.id === this.selectedQuery.id))
-      console.log(this.selectedQuery);
+      this.updateQuery();
+
     }
+  }
+
+  updateQuery(){
+    this.isProcessing = true;
+    this.queryClient.put(this.selectedQuery).subscribe(() => {
+      this.isProcessing = false;
+    })
+  }
+
+  saveNewQuery() {
+    this.isProcessing = true;
+    var dto = new NewQueryDto({
+      name: this.newQueryForm.get('name').value,
+      url: this.newQueryForm.get('url').value,
+      userId: 1
+    });
+
+    this.queryClient.post(dto).subscribe(response => {
+      this.queries.push(response);
+      this.newQueryForm.reset();
+      this.onSetSelectedQuery(response.id);
+      this.isProcessing = false;
+    })
+  }
+
+  onRunQuery(queryId:number) {
+    this.isProcessing = true;
+    this.selectedQuery = this.queries.find(x => x.id == queryId);
+
+    this.queryClient.scrapeAdverstisements(1, queryId).subscribe(response => {
+      this.selectedQuery.advertisements.push(...response);
+      this.isProcessing = false;
+    }, error => {
+      this.showErrorMessagse()
+
+    })
   }
 }

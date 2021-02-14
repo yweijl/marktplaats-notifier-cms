@@ -6,10 +6,13 @@
     <div class="section">
       <mat-card class="query-card">
         <div class="queries">
-          <mat-selection-list [multiple]="false">
-            <mat-list-option (click)="onSetSelectedQuery(query.id)" *ngFor="let query of queries" [value]="query">
+          <mat-selection-list *ngIf="queries" [multiple]="false">
+            <mat-list-option [selected]="query.id === selectedQueryId" (click)="onSetSelectedQuery(query.id)" *ngFor="let query of queries" [value]="query">
               <div class="list-item">
-                {{query.name}}
+                <div class="query-name">{{query.name}}</div>
+                <button [disabled]="isProcessing" (click)="onRunQuery(query.id)" mat-icon-button>
+                  <mat-icon>play_circle</mat-icon>
+                </button>
                 <button (click)="onRemoveQuery(query.id)" mat-icon-button>
                   <mat-icon>delete</mat-icon>
                 </button>
@@ -45,18 +48,20 @@
             </mat-form-field>       
           </form>
         </div>
-        <button class="" mat-stroked-button color="primary" (click)="onSaveNewQuery()">Opslaan</button>
+        <button class="" mat-stroked-button color="primary" (click)="onSave()">Opslaan</button>
       </mat-card>
     </div>
 
+    <div class="section" *ngIf="errorOccured">
 
-    <div class="section">
-      <mat-card class="advertisement-card" *ngFor="let item of advertiments">
+    </div>
+    <div class="section" *ngIf="selectedQuery?.advertisements">
+      <mat-card class="advertisement-card" *ngFor="let item of selectedQuery.advertisements">
         <div class="card-header">
           <mat-card-title>{{item.title}}</mat-card-title>
         </div>
         <div class="card-content">
-          <img class="card-image" src="{{item.imageSource}}" alt="Photo {{item.title}}">
+          <img class="card-image" src="{{item.imageUrl}}" alt="Photo {{item.title}}">
           <div class="card-text">
             <p>{{item.description}}</p>
             <div class="card-footer">
