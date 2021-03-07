@@ -2,7 +2,7 @@ import { Component, ChangeDetectorRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { QueryClient, Query, NewQueryDto, Advertisement } from '../http.clients/api.client'
-import {MatSnackBar} from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,8 +21,9 @@ export class DashboardComponent {
   errorOccured: false;
 
   ngOnInit(): void {
-    this.queryClient.getList(1).subscribe(response => {
+    this.queryClient.getList().subscribe(response => {
       this.queries = response;
+    }, error => {
     })
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
@@ -33,7 +34,7 @@ export class DashboardComponent {
   }
 
   constructor(
-    private queryClient: QueryClient, 
+    private queryClient: QueryClient,
     private _snackBar: MatSnackBar,
     private ref: ChangeDetectorRef) { }
 
@@ -71,12 +72,15 @@ export class DashboardComponent {
   onSetSelectedQuery(id: number) {
     this.newQuery = false;
     this.selectedQuery = this.queries.find(x => x.id === id);
+    if (!this.selectedQuery.advertisements) {
+      this.selectedQuery.advertisements = []
+    }
     this.selectedQueryId = id;
   }
 
   onSave() {
     if (this.newQuery) {
-      this.saveNewQuery();   
+      this.saveNewQuery();
 
     } else {
       this.updateQuery();
@@ -84,7 +88,7 @@ export class DashboardComponent {
     }
   }
 
-  updateQuery(){
+  updateQuery() {
     this.isProcessing = true;
     this.queryClient.put(this.selectedQuery).subscribe(() => {
       this.isProcessing = false;
@@ -95,8 +99,7 @@ export class DashboardComponent {
     this.isProcessing = true;
     var dto = new NewQueryDto({
       name: this.newQueryForm.get('name').value,
-      url: this.newQueryForm.get('url').value,
-      userId: 1
+      url: this.newQueryForm.get('url').value
     });
 
     this.queryClient.post(dto).subscribe(response => {
@@ -107,16 +110,16 @@ export class DashboardComponent {
     })
   }
 
-  onRunQuery(queryId:number) {
+  onRunQuery(queryId: number) {
     this.isProcessing = true;
     this.selectedQuery = this.queries.find(x => x.id == queryId);
 
-    this.queryClient.scrapeAdverstisements(1, queryId).subscribe(response => {
+    this.queryClient.scrapeAdverstisements(queryId).subscribe(response => {
       this.selectedQuery.advertisements.push(...response);
       this.isProcessing = false;
     }, error => {
       this.showErrorMessagse()
 
-    })
+    });
   }
 }

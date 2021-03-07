@@ -1,0 +1,19 @@
+<div class="container">
+  <mat-card class="login-card">
+    <form class="form" [formGroup]="signinForm">
+      <mat-form-field class="">
+        <input type="email" formControlName="email" matInput placeholder="E-mail">
+      </mat-form-field>
+      <mat-form-field class="">
+        <input formControlName="userName" matInput placeholder="Gebruikersnaam">
+      </mat-form-field>
+      <mat-form-field class="">
+        <input type="password" formControlName="password" matInput placeholder="wachtwoord">
+      </mat-form-field>
+    </form>
+    <div class="footer">
+      <button class="" mat-stroked-button color="success" (click)="onRegister()">Account aanmaken</button>
+      <button class="" mat-stroked-button color="primary" (click)="onLogin()">Login</button>
+    </div>
+  </mat-card>
+</div>
